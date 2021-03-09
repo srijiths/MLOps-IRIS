@@ -1,0 +1,48 @@
+Use Python
+--------------
+Use Python 3.6
+
+Install basic python libs
+------------------------
+environment_setup/install-requirements.sh
+
+Install Azure CLI
+------------------
+az extension add -n azure-cli-ml
+
+Create/Use ML Workspace
+----------------------
+az ml workspace create -g $(ml.resourceGroup) -w $(ml.workspace) -l $(ml.region) --exist-ok --yes
+
+Create/Use Compute Target
+--------------------------
+az ml computetarget create amlcompute -g $(ml.resourceGroup) -w $(ml.workspace) -n $(ml.computeName) -s $(ml.computeVMSize) --min-nodes $(ml.computeMinNodes) --max-nodes $(ml.computeMaxNodes) --idle-seconds-before-scaledown $(ml.computeIdleSecs) 
+
+Upload Data to Blobstore
+--------------------------
+az ml datastore upload -w $(ml.workspace) -g $(ml.resourceGroup) -n $(az ml datastore show-default -w $(ml.workspace) -g $(ml.resourceGroup) --query name -o tsv) -p data -u irisdata
+
+Create Metadata & Model folders
+-------------------------------
+mkdir metadata && mkdir models
+
+IRIS Training
+-------------
+az ml run submit-script -g $(ml.resourceGroup) -w $(ml.workspace) -e $(ml.experimentName) --ct $(ml.computeName) -c iris_training --source-directory . --path environment_setup -t ./metadata/run.json iris_training.py --container_name irisdata --input_csv Iris.csv --model_path ./models/iris_model.pkl --artifact_loc ./outputs/models/ --dataset_name iris_ds --dataset_desc "IRIS Data Set"
+
+Register Model in to Model Registry
+------------------------------------
+az ml model register -g $(ml.resourceGroup) -w $(ml.workspace) -n IRIS --asset-path outputs/models/ -d "IRIS Decision Tree Classifier" --tag "model"="Decision Tree"  --model-framework Custom -f ./metadata/run.json -t metadata/model.json
+
+Copy File to Pipeline Artifact
+-------------------------------
+Source Folder : $(Build.SourcesDirectory)
+Target Folder : $(Build.ArtifactStagingDirectory)
+Contents :
+**/metadata/*
+**/environment_setup/*
+**/deployment/*
+**/inference/*
+**/tests/smoke/*
+**/outputs/prediction.csv
+

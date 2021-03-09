@@ -1,0 +1,32 @@
+name: iris_demo
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  # The python interpreter version.
+  # Currently Azure ML Workbench only supports 3.5.2 and later.
+  - python=3.6.8
+  - pip>=19.1.1
+  - numpy>=1.13.3
+  - pandas==0.25.1
+  - pytest>=3.6.4
+  - pip:
+      - azureml-sdk==1.17.0
+      #- azureml-sdk==1.17.0
+      - black>=18.6b4
+      - cached-property==1.5.1
+      - jsonlines>=1.2.0
+      - nteract-scrapbook>=0.2.1
+      - pydocumentdb>=2.3.3
+      - tqdm==4.32.2
+      - pyemd==0.5.1
+      - ipywebrtc==0.4.3
+      - pre-commit>=1.14.4
+      - scipy
+      #- scikit-learn>=0.19.0,<=0.20.3
+      - scikit-learn==0.22.1
+      - requests==2.22.0
+      - requests-oauthlib==1.2.0
+      - regex==2020.2.20
+      - seaborn
+      - joblib

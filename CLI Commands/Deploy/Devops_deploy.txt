@@ -1,0 +1,19 @@
+Use Python 3.6
+---------------
+Install Requirements
+--------------------
+$(System.DefaultWorkingDirectory)/_MLOpsIRIS-CI/iris_classifier/a/install-requirements.sh
+
+Azure CLI Installation
+-----------------------
+az extension add -n azure-cli-ml
+
+Deploy IRIS Model to Azure Container Instances
+----------------------------------------------
+az ml model deploy -g $(ml.resourceGroup) -w $(ml.workspace) -n $(service_name) -f model.json --dc aciDeploymentConfig.yml --ic inferenceConfig.yml --description "IRIS Classifier deployed in ACI" --overwrite
+
+Execute Tests
+--------------
+pytest smoke_tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=integration_test --cov-report=xml --cov-report=html --scoreurl $(az ml service show -g $(ml.resourceGroup) -w $(ml.workspace) -n $(service_name) --query scoringUri -o tsv)
+
+Publish Test Results
