@@ -1,6 +1,5 @@
 import os
 import sys
-sys.path.append('./utils')
 
 import azureml as aml
 from azureml.core import Workspace, Datastore, Dataset
