@@ -1,3 +1,7 @@
+# Azure MLOps Talk
+
+(https://www.youtube.com/watch?v=pLd7xF0z5Zs)
+
 # Introduction 
 Fully Automated end-to-end Training and Deployment of IRIS Classifer using Azure MLOps
 # Prerequisites
