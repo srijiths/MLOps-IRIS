@@ -1,3 +1,5 @@
+# Due to many conflicting changes in Azure ML SDK and its dependencies, the requirements and conda dependencies needs to be changed. The repo itself would not execute successfully.
+
 # Azure MLOps Talk
 
 (https://www.youtube.com/watch?v=pLd7xF0z5Zs)
